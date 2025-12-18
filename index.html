@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dune: Guerra de Arrakis - Modo Solitario</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Roboto:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- PWA Settings -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#c16200">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Dune Automa">
+    <link rel="apple-touch-icon" href="dune_hero_art.jpg">
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(() => console.log('Service Worker Registrado'));
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <header class="game-header">
+            <h1>Dune: Guerra de Arrakis</h1>
+            <div class="status-bar">
+                <span id="round-display">Ronda 1</span>
+                <span id="phase-display">Preparación</span>
+            </div>
+        </header>
+
+        <main>
+            <div id="main-content">
+                <!-- Dynamic Content will be injected here -->
+                <div id="action-card" class="card">
+                    <img src="assets/worm_rider.jpg" alt="Dune Art" class="hero-image">
+                    <h2>Bienvenido</h2>
+                    <p>Pulsa "Comenzar" para iniciar el modo solitario.</p>
+                    <button id="start-btn" class="btn-primary">Comenzar Partida</button>
+                    <button id="madhi-btn" class="btn-secondary">Diferencias modo
+                        Mahdi</button>
+                </div>
+
+                <!-- Madhi Mode Info Card (Hidden by default) -->
+                <div id="madhi-info" class="card" style="display: none; text-align: left;">
+                    <h2 style="text-align: center; border-bottom: 2px solid var(--color-sand);">Diferencias Modo Mahdi
+                    </h2>
+                    <p style="font-style: italic; opacity: 0.8; margin-bottom: 1.5rem;">En el modo solitario, tú
+                        controlas a los Atreides y el sistema (bot) controla a los Harkonnen.</p>
+
+                    <h3 style="color: var(--color-spice); margin-top: 1rem;">1. Preparación y Componentes</h3>
+                    <ul>
+                        <li><strong>Mazo de Táctica:</strong> Mazo exclusivo de 8 cartas que define el comportamiento
+                            por ronda (Cosecha/Sietch Objetivo).</li>
+                        <li><strong>Mazo de Refuerzos Harkonnen:</strong> Se crea al inicio de ronda (1 carta Casa + 1
+                            Aliados). Potencia el combate.</li>
+                        <li><strong>Fichas Bocabajo:</strong> Tus fichas de Despliegue y Sietch están bocabajo para el
+                            juego, pero tú puedes mirarlas. Revelarlas voluntariamente cuesta añadir cartas al enemigo.
+                        </li>
+                    </ul>
+
+                    <h3 style="color: var(--color-spice); margin-top: 1rem;">2. Estructura de la Ronda</h3>
+                    <ul>
+                        <li><strong>Presciencia:</strong> Robas 2 cartas (en vez de 3).</li>
+                        <li><strong>Supremacía Automática:</strong> +1 Supremacía gratis al final de cada ronda.</li>
+                        <li><strong>Sietch Objetivo:</strong> Un objetivo prioritario definido por la carta de Táctica.
+                        </li>
+                    </ul>
+
+                    <h3 style="color: var(--color-spice); margin-top: 1rem;">3. Fase de Vehículos (Harkonnen)</h3>
+                    <ul>
+                        <li><strong>Colocación Automática:</strong> Cosechadoras según prioridad de Sector de Cosecha
+                            (prioriza Desierto Profundo).</li>
+                        <li><strong>Ornitópteros:</strong> Conectan Legiones con objetivos. No Exploración.</li>
+                    </ul>
+
+                    <h3 style="color: var(--color-spice); margin-top: 1rem;">4. Resolución de Acciones</h3>
+                    <ul>
+                        <li><strong>Turnos Alternos:</strong> Harkonnen tira y resuelve 1 dado después de cada turno
+                            tuyo.</li>
+                        <li><strong>Prioridad:</strong> 1º Acción Especial de Líder, 2º Tablas de prioridad.</li>
+                        <li><strong>Fichas Bene Gesserit:</strong> Se cambian por 1 dado extra (o +1 Supremacía si no
+                            hay dados).</li>
+                        <li><strong>Regla de la Elección:</strong> Ante la duda, TÚ eliges la peor opción para el
+                            Harkonnen.</li>
+                    </ul>
+
+                    <h3 style="color: var(--color-spice); margin-top: 1rem;">5. Movimiento Harkonnen</h3>
+                    <ul>
+                        <li><strong>Objetivo Fijo:</strong> Hacia Sietch Objetivo.</li>
+                        <li><strong>Fronteras:</strong> Ignoran fronteras intransitables.</li>
+                        <li><strong>Defensa Automática:</strong> Al salir de un Asentamiento, dejan 2 fichas de
+                            Despliegue.</li>
+                    </ul>
+
+                    <h3 style="color: var(--color-spice); margin-top: 1rem;">6. Combate</h3>
+                    <ul>
+                        <li><strong>Max Power:</strong> Descarta cartas para tirar siempre 6 dados si puede.</li>
+                        <li><strong>Sin Retirada:</strong> Nunca se retiran.</li>
+                        <li><strong>Cesar Ataque:</strong> Solo si su PC <= mitad del tuyo.</li>
+                        <li><strong>Continuar:</strong> No recibe daño automático por continuar contra Sietch.</li>
+                    </ul>
+
+                    <h3 style="color: var(--color-spice); margin-top: 1rem;">7. Cambios en Cartas y Líderes</h3>
+                    <ul>
+                        <li><strong>Thufir Hawat / Mohiam:</strong> Juegan cartas inmediatamente.</li>
+                        <li><strong>Trance de Verdad:</strong> Fuerza un resultado de dado específico.</li>
+                        <li><strong>Ornitópteros:</strong> Restricción estricta al revelar fichas (no si hay ornitóptero
+                            conectado).</li>
+                    </ul>
+
+                    <button id="back-from-madhi-btn" class="btn-primary" style="margin-top: 2rem;">Volver al
+                        Inicio</button>
+                </div>
+            </div>
+
+            <!-- Input Controls Containers (Hidden by default) -->
+            <div id="die-controls" class="card" style="display: none; margin-top: 1rem;">
+                <h3>Resultado del Dado Harkonnen</h3>
+                <div class="die-buttons">
+                    <button class="btn-die" data-result="leadership">Liderazgo</button>
+                    <button class="btn-die" data-result="strategy">Estrategia</button>
+                    <button class="btn-die" data-result="deployment">Despliegue</button>
+                    <button class="btn-die" data-result="mentat">Mentat</button>
+                    <button class="btn-die" data-result="house">Casa</button>
+                </div>
+                <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+                    <button id="combat-btn" class="btn-secondary"
+                        style="flex: 1; border-color: var(--color-harkonnen); color: var(--color-harkonnen);">⚔️
+                        Combate</button>
+                    <button id="end-round-btn" class="btn-secondary" style="flex: 1;">Terminar Fase</button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="controls">
+            <a href="Dune_Guerra_Arrakis_Resumen_v1.pdf" target="_blank" class="btn-secondary">Reglas (PDF)</a>
+            <a href="https://chatgpt.com/" target="_blank" class="btn-secondary"
+                style="border-color: #10a37f; color: #10a37f;">Preguntar a IA</a>
+            <button id="next-btn" class="btn-primary" disabled>Siguiente</button>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
